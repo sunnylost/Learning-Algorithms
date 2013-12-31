@@ -1,3 +1,5 @@
+var TestSort = require('./test-sort').TestSort;
+
 function insertionSort(a) {
     var i   = 1,
         len = a.length,
@@ -13,4 +15,4 @@ function insertionSort(a) {
     return a;
 }
 
-console.log(insertionSort([ 5, 1, 3, 6, 9, 4, 2 ]));
+TestSort.test(insertionSort);
