@@ -5,11 +5,11 @@ function selectionSort(a) {
         len = a.length - 1,
         j, min, min_index, tmp;
 
-    for(; i <= len; i++) {
+    for(; i < len; i++) {
         min = a[i];
         min_index = i;
 
-        for(j = i + 1; j <= len; j++) {
+        for(j = i + 1; j < len; j++) {
             if(a[j] < min) {
                 min = a[j];
                 min_index = j;
