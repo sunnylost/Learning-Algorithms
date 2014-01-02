@@ -4,9 +4,10 @@ Array.prototype.toString = function() {
 
 TestSort = {
     randomArray: function() {
-        var max  = 100,
+        var max = 100,
             len = parseInt(Math.random() * 10) + 10,
             a   = new Array(len);
+            
         for(var i = 0; i < len; i++) {
             a[i] = parseInt(Math.random() * 100);
         }
