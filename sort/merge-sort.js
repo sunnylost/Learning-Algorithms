@@ -19,13 +19,10 @@ function mergeSort(a) {
 }
 
 mergeSort.merge = function(a, b) {
-    var t1, t2,
-        r = [];
+    var r = [];
 
     while(a.length && b.length) {
-        t1 = a[0];
-        t2 = b[0];
-        r.push(t1 < t2 ? a.shift() : b.shift());
+        r.push(a[0] < b[0] ? a.shift() : b.shift());
     }
 
     return r.concat(a.concat(b));
