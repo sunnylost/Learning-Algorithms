@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KMP</title>
+  <style type="text/css">
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      #wrap {
+        width: 80%;
+        padding-top: 10%;
+        margin: auto;
+        overflow: hidden;
+      }
+
+      section {
+        float: left;
+        width: 50%;
+        position: relative;
+      }
+
+      section label {
+        position: absolute;
+        top: -30px;
+        font-size: 20px;
+      }
+
+      textarea {
+        width: 80%;
+        height: 200px;
+      }
+
+      button {
+        margin-top: 30px;
+        width: 20%;
+        height: 50px;
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      #result {
+        font-size: 50px;
+        color: orange;
+        text-align: center;
+        padding: 10px;
+      }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <section>
+      <label for="sourceStr">Source</label>
+      <textarea id="sourceStr">BBC ABCDAB AeEFADFF feaABCDABDwf BCDABCDABDE</textarea>
+    </section>
+    <section>
+      <label for="searchStr">Search</label>
+      <textarea id="searchStr">ABCDABD</textarea>
+    </section>
+    <button onclick="searchStrInSource(sourceStr.value, searchStr.value);">Search</button>
+    <div id="result"></div>
+  </div>
+  <script type="text/javascript">
+      /**
+       * 生成部分匹配表
+       * @param  {[type]} str [description]
+       * @return {[type]}     [description]
+       */
+      function generatePartialMatchTable(str) {
+        var arr    = str.split(''),
+            len    = arr.length,
+            i, j, tmp, tmpLen,
+            prefix = [],
+            suffix = [],
+            table  = [];
+
+        for(i = 1; i <= len; i++) {
+          tmp = str.substring(0, i);
+          tmpLen = tmp.length;
+
+          for(j = 1; j < i; j++) {
+            prefix.push(tmp.substring(0, j));
+          }
+
+          for(j = tmpLen - 1; j > 0; j--) {
+            suffix.push(tmp.substring(j, tmpLen));
+          }
+
+          table.push(countEqualPart(prefix, suffix));
+
+          prefix = [];
+          suffix = [];
+        }
+        return table;
+      }
+
+      /**
+       * 返回 a 和 b 中相等的元素个数
+       * @param  {[type]} a [description]
+       * @param  {[type]} b [description]
+       */
+      function countEqualPart(a, b) {
+        var i      = 0,
+            j      = 0,
+            len    = a.length,
+            tmpLen = len,
+            equalPars = [],
+            item;
+
+          while(tmpLen--) {
+            item = a[tmpLen];
+            for(j = 0; j < len; j++) {
+              if(item === b[j]) equalPars.push(item);
+            }
+          }
+          equalPars.sort(function(a, b) {
+            return b.length - a.length;
+          })
+
+          return typeof equalPars[0] === 'undefined' ? 0 : equalPars[0].length;
+      }
+
+      /**
+       * 使用 KMP 算法查找字符串
+       * @param  {[type]} source 源文本
+       * @param  {[type]} search 待查找字符串
+       */
+      function searchStrInSource(source, search) {
+        if(source === '') {
+          return result.innerHTML = 'The Source string is null!';
+        } else if(search === '') {
+          return result.innerHTML = 'The Search string is null!';
+        }
+
+        source = source.trim();
+        search = search.trim();
+
+        var pmt = generatePartialMatchTable(search);
+
+        source = source.split('');
+        search = search.split('');
+
+        var sourceLen = source.length,
+            searchLen = search.length,
+            i = 0,
+            j = 0,
+            k = 0;
+
+        for(; i < sourceLen;) {
+          k = 0;
+          if(source[i] !== search[j]) {
+            if(j != 0) {
+              j = pmt[j - 1];
+              continue;
+            }
+            i++;
+          } else {
+            k = i;
+            while(source[k] === search[j]) {
+              k++;
+              j++;
+            }
+            if(j >= searchLen) {
+              return result.innerHTML = 'Find it! The index is ' + i;
+            } else {
+              j = pmt[j - 1];
+              i = k;
+              continue;
+            }
+          }
+        }
+        result.innerHTML = 'Cannot find!';
+      }
+  </script>
+</body>
+</html>
