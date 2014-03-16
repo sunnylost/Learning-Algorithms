@@ -126,20 +126,8 @@
        * @param  {[type]} source 源文本
        * @param  {[type]} search 待查找字符串
        */
-      function searchStrInSource(source, search) {
-        if(source === '') {
-          return result.innerHTML = 'The Source string is null!';
-        } else if(search === '') {
-          return result.innerHTML = 'The Search string is null!';
-        }
-
-        source = source.trim();
-        search = search.trim();
-
+      function KMP(source, search) {
         var pmt = generatePartialMatchTable(search);
-
-        source = source.split('');
-        search = search.split('');
 
         var sourceLen = source.length,
             searchLen = search.length,
@@ -162,7 +150,7 @@
               j++;
             }
             if(j >= searchLen) {
-              return result.innerHTML = 'Find it! The index is ' + i;
+              return i;
             } else {
               j = pmt[j - 1];
               i = k;
@@ -170,7 +158,18 @@
             }
           }
         }
-        result.innerHTML = 'Cannot find!';
+        return -1;
+      }
+
+      function searchStrInSource(source, search) {
+        if(source === '') {
+          return result.innerHTML = 'The Source string is null!';
+        } else if(search === '') {
+          return result.innerHTML = 'The Search string is null!';
+        }
+
+        var ret = KMP(source.trim(), search.trim());
+        result.innerHTML = ret === -1 ? 'Cannot find!' : 'Find it! The index is ' + ret;
       }
   </script>
 </body>
