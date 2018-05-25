@@ -1,25 +1,33 @@
-Array.prototype.toString = function() {
-    return '[' + this.join(',') + ']';
-};
+function arrayToString(arr) {
+    return '[' + arr.join(',') + ']'
+}
 
-TestSort = {
-    randomArray: function() {
-        var max = 100,
-            len = parseInt(Math.random() * 10) + 10,
-            a   = new Array(len);
-            
-        for(var i = 0; i < len; i++) {
-            a[i] = parseInt(Math.random() * 100);
+module.exports = {
+    randomArray: function(max = 100) {
+        let len = (10 + Math.random() * 10) >>> 0
+        let a = new Array(len)
+
+        for (let i = 0; i < len; i++) {
+            a[i] = (Math.random() * max) >>> 0
         }
 
-        return a;
+        return a
     },
 
     test: function(fn) {
-        var a = this.randomArray(),
-            after;
-        console.log('Before Sort: '  + a.toString());
-        console.log('After Sort: '   + (after = fn(a)));
-        console.log('The result is ' + (after.toString() == a.sort(function(a, b) { return a - b; }).toString()));
+        let a = this.randomArray()
+        let afterStr
+
+        console.log('Before Sort: ' + arrayToString(a))
+        console.log('After Sort: ' + (afterStr = arrayToString(fn(a))))
+
+        a.sort(function(a, b) {
+            return a - b
+        })
+
+        console.log(
+            'The result is ' +
+                (afterStr === arrayToString(a) ? 'Correct!' : 'Wrong!')
+        )
     }
-};
+}

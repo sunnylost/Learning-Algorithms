@@ -1,18 +1,10 @@
-var TestSort = require('./test-sort').TestSort;
+let { less, exch } = require('./util')
 
-function insertionSort(a) {
-    var i   = 1,
-        len = a.length,
-        j, key, tmp;
-
-    for(; i < len; i++) {
-        key = a[i];
-        j = i - 1;
-
-        while(j >= 0 && (tmp = a[j]) > key) a[--j + 2] = tmp;
-        a[j + 1] = key;
+module.exports = a => {
+    for (let i = 1; i < a.length; i++) {
+        for (let j = i; j > 0 && less(a[j], a[j - 1]); j--) {
+            exch(a, j, j - 1)
+        }
     }
-    return a;
+    return a
 }
-
-TestSort.test(insertionSort);

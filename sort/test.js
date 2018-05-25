@@ -1,0 +1,10 @@
+let TestSort = require('./test-sort')
+let selectionSort = require('./selection-sort')
+let insertionSort = require('./insertion-sort')
+let shellSort = require('./shell-sort')
+let mergeSort = require('./merge-sort')
+
+// TestSort.test(selectionSort)
+// TestSort.test(insertionSort)
+// TestSort.test(shellSort)
+TestSort.test(mergeSort)
