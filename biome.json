@@ -16,11 +16,15 @@
         "enabled": true,
         "rules": {
             "recommended": true,
+            "complexity": {
+                "useArrowFunction": "off"
+            },
             "suspicious": {
                 "noExplicitAny": "off"
             },
             "style": {
-                "noParameterAssign": "off"
+                "noParameterAssign": "off",
+                "noVar": "off"
             }
         }
     },
