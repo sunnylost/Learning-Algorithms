@@ -19,6 +19,10 @@ function arrayToString(arr: number[]) {
 const defaultMaxLength = 1000
 const defaultMaxValue = 100
 
+function randomNumber() {
+    return (Math.random() * defaultMaxValue) >>> 0
+}
+
 export function randomArray(maxLength = defaultMaxLength, maxValue = defaultMaxValue) {
     const arr: number[] = []
 
@@ -29,13 +33,13 @@ export function randomArray(maxLength = defaultMaxLength, maxValue = defaultMaxV
     return arr
 }
 
-type Mode = 'normal' | 'best' | 'worst'
+type Mode = 'normal' | 'best' | 'worst' | 'duplicate'
 function calculateAvgTime(fn: SortFunction, mode: Mode) {
     const times = 100
     let accumulateTime = 0
 
     for (let i = 0; i < times; i++) {
-        const arr = randomArray()
+        let arr = randomArray()
 
         if (mode === 'best') {
             arr.sort()
@@ -44,6 +48,10 @@ function calculateAvgTime(fn: SortFunction, mode: Mode) {
         if (mode === 'worst') {
             arr.sort()
             arr.reverse()
+        }
+
+        if (mode === 'duplicate') {
+            arr = Array(arr.length).fill(randomNumber())
         }
 
         const start = performance.now()
@@ -61,7 +69,8 @@ export function test(fn: SortFunction) {
         isCorrect: false,
         best: '0ms',
         worst: '0ms',
-        normal: '0ms'
+        normal: '0ms',
+        duplicate: '0ms'
     }
     const arr = randomArray()
 
@@ -79,6 +88,7 @@ export function test(fn: SortFunction) {
 
     // console.log('  Worst')
     report.worst = calculateAvgTime(fn, 'worst')
+    report.duplicate = calculateAvgTime(fn, 'duplicate')
 
     return report
 }
