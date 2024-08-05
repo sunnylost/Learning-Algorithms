@@ -230,7 +230,7 @@ export class LinkedListWithCircle<T> {
                 this.first = null
                 this.last = null
             } else {
-                this.last.next = this.first.next
+                this.last!.next = this.first.next
                 this.first = this.first.next
             }
         } else {
